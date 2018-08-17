@@ -9,5 +9,22 @@ sysuse auto, clear
 quietly regress mpg price
 matrix BETA = e(b)
 global rmse = e(rmse)
-rdump, globals(rmse) matrices(BETA) rfile('mydata.R')
+rdump, globals(rmse) matrices(BETA) rfile(mydata.R)
+```
+
+statado.R contains an R function called statado, which writes selected numeric matrices, numeric vectors, numeric scalars and single strings into a text file that Stata can read in as a .do file.
+
+Example:
+
+```
+matrix1 <- matrix(1:4,nrow=2)
+matrix2 <- matrix1^2
+my_vector <- c(5,9,1)
+my_scalar <- 14.1
+my_string <- "abc"
+statado(matrices=c("matrix1","matrix2"),
+   vectors="my_vector",
+   numerics="my_scalar",
+   strings="my_string",
+   dofile="somedata.do")
 ```
