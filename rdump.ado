@@ -37,6 +37,9 @@ if "`matrices'"!="" {
 			if `mrow'==1 { // row matrix: write as vector
 				if `mcol'==1 { // special case of 1x1 matrix: write as scalar
 					local mval=`mat'[1,1]
+					if `mval'==. {
+						local mval = "NA"
+					}
 					file write dataf "`mat' <- `mval'" _n
 				}
 				else {
@@ -44,9 +47,15 @@ if "`matrices'"!="" {
 					local mcolminusone=`mcol'-1
 					forvalues i=1/`mcolminusone' {
 						local mval=`mat'[1,`i']
+						if `mval'==. {
+							local mval = "NA"
+						}
 						file write dataf "`mval',"
 					}
 					local mval=`mat'[1,`mcol']
+					if `mval'==. {
+						local mval = "NA"
+					}
 					file write dataf "`mval')" _n
 				}
 			}
@@ -55,9 +64,15 @@ if "`matrices'"!="" {
 				local mrowminusone=`mrow'-1
 				forvalues i=1/`mrowminusone' {
 					local mval=`mat'[`i',1]
+					if `mval'==. {
+						local mval = "NA"
+					}
 					file write dataf "`mval',"
 				}
 				local mval=`mat'[`mrow',1]
+				if `mval'==. {
+					local mval = "NA"
+				}
 				file write dataf "`mval')" _n
 			}
 			else { // otherwise, write as matrix
@@ -67,15 +82,24 @@ if "`matrices'"!="" {
 				forvalues j=1/`mcolminusone' {
 					forvalues i=1/`mrow' {
 						local mval=`mat'[`i',`j']
+						if `mval'==. {
+							local mval = "NA"
+						}
 						file write dataf "`mval',"
 					}
 				}
 				forvalues i=1/`mrowminusone' { // write final column
 					local mval=`mat'[`i',`mcol']
+					if `mval'==. {
+						local mval = "NA"
+					}
 					file write dataf "`mval',"
 				}
 				// write final cell
 				local mval=`mat'[`mrow',`mcol']
+				if `mval'==. {
+					local mval = "NA"
+				}
 				file write dataf "`mval'), .Dim=c(`mrow',`mcol'))" _n
 			}
 		}
@@ -90,6 +114,9 @@ if "`globals'"!="" {
 		// -stan- will quietly ignore non-numeric & non-existent globals
 		capture confirm number ${`g'}
 		if !_rc {
+			if ${`g'} ==. {
+				global `g' = "NA"
+			}
 			file write dataf "`g' <- ${`g'}" _n
 		}
 	}
@@ -97,4 +124,3 @@ if "`globals'"!="" {
 file close dataf
 
 end
-
