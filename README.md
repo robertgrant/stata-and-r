@@ -28,3 +28,5 @@ statado(matrices=c("matrix1","matrix2"),
    strings="my_string",
    dofile="somedata.do")
 ```
+
+The other files here relate to the [BayesCamp](https://www.bayescamp.com) online workshop "Using Stata and R Together". The stata-and-r.md Markdown file produces [mdp](https://github.com/visit1985/mdp) slides.
